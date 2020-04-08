@@ -24,5 +24,7 @@ int main() {
     for(int i : bin){
         cout<<i<<" ";
     }
+    cout<<endl;
+    cout<<bt.checkIsBinary();
     return 0;
 }

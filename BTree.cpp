@@ -127,7 +127,7 @@ BTree<T>::~BTree() {
 }
 
 template<typename T>
-int BTree<T>::average() {
+double BTree<T>::average() {
     return _average / size;
 }
 
@@ -240,4 +240,100 @@ bool BTree<T>::find(node<T> *_node, T key, vector<int> &path) {
     path.pop_back();
     return false;
 }
+
+template<typename T>
+void BTree<T>::findMin(node<T> *_node, int &min) {
+    if (!_node) {
+        return;
+    }
+    if (_node->value < min) {
+        min = _node->value;
+    }
+    findMin(_node->left, min);
+    findMin(_node->right, min);
+}
+
+template<typename T>
+void BTree<T>::findMax(node<T> *_node, int &max) {
+    if (!_node) { return; }
+    if (_node->value > max) {
+        max = _node->value;
+    }
+    findMax(_node->left, max);
+    findMax(_node->right, max);
+}
+
+template<typename T>
+bool BTree<T>::checkIsBinary(node<T> *_node, int min, int max) {
+    if (!_node) { return true; }
+    if (_node->value < min || root->value > max) {
+        return false;
+    }
+    if (_node->value == min && _node->left && this->root->value == _node->value) {
+        return false;
+    }
+    if (_node->value == max && _node->right && this->root->value == _node->value) {
+        return false;
+    }
+    return checkIsBinary(_node->left, min, _node->value) && checkIsBinary(_node->right, _node->value, max);
+}
+
+template<typename T>
+bool BTree<T>::checkIsBinary() {
+    int max = INTMAX_MIN, min = INTMAX_MAX;
+    findMin(root->left, min);
+    findMax(root->right, max);
+    return checkIsBinary(root, min, max);
+}
+
+template<typename T>
+BTree<T>::BTree(BTree<T> &&copy) noexcept {
+    std::swap(root, copy.root);
+    theNumberOfEvenNumbers = copy.theNumberOfEvenNumbers;
+    size = copy.size;
+    _average = copy._average;
+    _positive = copy._positive;
+}
+
+template<typename T>
+BTree<T>::BTree(BTree<T> &_copy) {
+    if (!_copy.root) {
+        return;
+    }
+    theNumberOfEvenNumbers = _copy.theNumberOfEvenNumbers;
+    size = _copy.size;
+    _average = _copy._average;
+    _positive = _copy._positive;
+    copy(root, _copy.root);
+}
+
+template<typename T>
+void BTree<T>::copy(node<T> *_node, node<T> *_copy) {
+    if (!_copy) {
+        return;
+    }
+    _node = new node<T>;
+    _node->value = _copy->value;
+    _node->right = nullptr;
+    _node->left = nullptr;
+    copy(_node->left, _copy->left);
+    copy(_node->right, _copy->right);
+}
+
+template<typename T>
+BTree<T> &BTree<T>::operator=(const BTree<T> &_copy) {
+    if (this == &copy) { return *this; }
+    this->destroy();
+
+    root = new node<T>;
+    root->value = _copy.root->value;
+    copy(root, _copy.root);
+    theNumberOfEvenNumbers = _copy.theNumberOfEvenNumbers;
+    size = _copy.size;
+    _average = _copy._average;
+    _positive = _copy._positive;
+    return *this;
+}
+
+
 
