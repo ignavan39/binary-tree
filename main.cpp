@@ -12,7 +12,7 @@ int main() {
     bt.insert(90);
     bt.insert(20);
     bt.insert(6);
-    bt.insert(10,3);
+   // bt.insert(10,3);
     //bt.deleteLeaves();
  //   bt.insert(18);
   //  bt.insert(1);

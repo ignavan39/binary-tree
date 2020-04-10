@@ -266,13 +266,13 @@ void BTree<T>::findMax(node<T> *_node, int &max) {
 template<typename T>
 bool BTree<T>::checkIsBinary(node<T> *_node, int min, int max) {
     if (!_node) { return true; }
-    if (_node->value < min || root->value > max) {
+    if (_node->value < min || _node->value > max) {
         return false;
     }
-    if (_node->value == min && _node->left && this->root->value == _node->value) {
+    if (_node->value == min && _node->left){// && this->root->value == _node->value) {
         return false;
     }
-    if (_node->value == max && _node->right && this->root->value == _node->value) {
+    if (_node->value == max && _node->right){// && this->root->value == _node->value) {
         return false;
     }
     return checkIsBinary(_node->left, min, _node->value) && checkIsBinary(_node->right, _node->value, max);
