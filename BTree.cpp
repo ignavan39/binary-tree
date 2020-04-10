@@ -80,7 +80,7 @@ void BTree<T>::inOrderPrint(node<T> *_node, ostream &os, int level) {
 
         inOrderPrint(_node->left, os, level + 1);
         for (int i = 0; i < level * 2; i++) {
-            os << " ";
+            os << "  ";
         }
         os << _node->value << endl;
         inOrderPrint(_node->right, os, level + 1);
